@@ -13,15 +13,22 @@ var markers = [];
 function addMarker(latitude, longitude, title){
 	var position = {lat:latitude, lng:longitude};
 	var marker = new google.maps.Marker({position: position, map:map});
-	marker.setTitle(title);
-	
+	if(title == ""){
+	  title = "UntitledImage";
+	  marker.setTitle(title);
+	}
+  	else{
+  		marker.setTitle(title);
+	}
 	//Add a listener for the click event
 	google.maps.event.addListener(marker, 'click', function(e){
-		makeInfoWindow(this.position, this.title);
+		makeInfoWindow(position, title);
 	});
 	
 	markers.push(marker);
 	zoomOnFirstResult();
+  
+  	console.dir(marker);
 }
   
 function clearMarkers(){
@@ -54,9 +61,9 @@ function makeInfoWindow(position, msg){
 }
 
 function zoomOnFirstResult(){
-	if(markers[0] == null)return;
+	if(markers[2] == null)return;
 	//set the center of the map to the position of the first marker
-	map.setCenter(markers[0].getPosition());
-	map.setZoom(10);
+	map.setCenter(markers[2].getPosition());
+	map.setZoom(15);
 }
 

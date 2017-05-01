@@ -45,7 +45,7 @@ function getFlickrPlace(){
 	//add the json format and callback request
 	placeUrl += "&format=json&jsoncallback=jsonPlaceLoaded";
 	
-	console.log("loading " +placeUrl);
+	//console.log("loading " +placeUrl);
 	$("#content").fadeOut(1000);
 	$.ajax({
 		dataType: "jsonp",
@@ -56,8 +56,8 @@ function getFlickrPlace(){
 }
 
 function jsonPlaceLoaded(obj){
-  console.log("obj = " +obj);
-  console.log("obj stringified = " + JSON.stringify(obj));
+  //console.log("obj = " +obj);
+  //console.log("obj stringified = " + JSON.stringify(obj));
   
   // if there's an error, print a message and return
   if(obj.error){
@@ -77,7 +77,7 @@ function jsonPlaceLoaded(obj){
   }
   
   var allPlaces = obj.places.place;
-  console.log("places:" + allPlaces.length);
+  //console.log("places:" + allPlaces.length);
   
   if(allPlaces.length == 0){
 	document.querySelector("#dynamicContent").innerHTML = "<p><i>" + "Sorry Could not find that location. Please Try Again." + "</i></p>";
@@ -110,7 +110,7 @@ function getFlickrLocationPhotos(place){
 	url += ("&lon=" + place.longitude);
 	
 	//limit the request to 10 phots per page
-	url += "&per_page=15";
+	url += "&per_page=20";
 	
 	url += "&format=json&jsoncallback=jsonLocationPhotosLoaded";
 	
@@ -128,8 +128,8 @@ function getFlickrLocationPhotos(place){
 }
   
 function jsonLocationPhotosLoaded(obj){
-	console.log("obj = " +obj);
-	console.log("obj stringified = " + JSON.stringify(obj));
+	//console.log("obj = " +obj);
+	//console.log("obj stringified = " + JSON.stringify(obj));
 	
 	// if there's an error, print a message and return
 	if(obj.error){
@@ -149,7 +149,7 @@ function jsonLocationPhotosLoaded(obj){
 	}
 	
 	var allPhotos = obj.photos.photo;
-	console.log("All photos.length = " + allPhotos.length);
+	//console.log("All photos.length = " + allPhotos.length);
   	clearMarkers();
 	markers = []; //clear old markers
 	for(var i =0; i < allPhotos.length; i++){
@@ -158,8 +158,10 @@ function jsonLocationPhotosLoaded(obj){
 		
 		getFlickrPhotoInfo(photo.id);
 		
+	  	bigString += "<div class='photoDiv'>";
 		var flickr_Photo_url = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_m.jpg"  
 		bigString += "<img src='"+ flickr_Photo_url +"'/>";
+	  	bigString += "</div>";
 	}
 	
 	document.querySelector("#dynamicContent").innerHTML = bigString;
@@ -179,7 +181,7 @@ function getFlickrPhotoInfo(photoID){
 	PhotoInfoURL += "&format=json&jsoncallback=jsonPhotoInfoLoaded";
 	
 	// call the web service, and download the file
-	console.log("loading " + PhotoInfoURL);
+	//console.log("loading " + PhotoInfoURL);
 	$("#content").fadeOut(1000);
 	$.ajax({
 	  dataType: "jsonp",
@@ -190,8 +192,8 @@ function getFlickrPhotoInfo(photoID){
 }
 
 function jsonPhotoInfoLoaded(obj){
-	console.log("obj = " +obj);
-	console.log("obj stringified = " + JSON.stringify(obj));
+	//console.log("obj = " +obj);
+	//console.log("obj stringified = " + JSON.stringify(obj));
 	
 	// if there's an error, print a message and return
 	if(obj.error){
@@ -215,7 +217,8 @@ function jsonPhotoInfoLoaded(obj){
 	
 	var latitude = Number(photoInfo.location.latitude);
 	var longitude = Number(photoInfo.location.longitude);
-			
+  	
+  	debugger;
 	if(latitude && longitude){
 		addMarker(latitude, longitude , "" + photoInfo.title._content);
 	}

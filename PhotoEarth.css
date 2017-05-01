@@ -2,16 +2,21 @@
  	font-family: 'Coming Soon', sans-serif;
  }
  
+body{
+  background-color: #1D2951;
+}
  h1{
- 	color:#e4685d;
-	text-shadow: 0 0 20px #FFF;
-	font-size: 50px;
+ 	color:silver;
+	text-shadow: 0 0 20px #000;
+	font-size: 80px;
 	padding: 30px 0 0 10px;
-	background-image: url(http://igm.rit.edu/~acjvks/courses/2014-fall/330/files/i/anime-girl-2.jpg);
-	
+   	text-align: center;
+	background-image: url("earth.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: 0 -80px;
+	background-position: 0 -100px;
+   	width: 85%;
+   	border-radius: 20px;
  }
  
  .eventDiv{
@@ -60,15 +65,28 @@
  	font-size:16px;
  }
  
-  img{
-  	padding:7px;
-  	border:1px solid black;
-  	background-color:white;
-  }
+img{
+  padding:7px;
+  border:1px solid black;
+  background-color:white;
+  display: block;
+  margin: auto;
+  margin-top: 5%;
+}
 	
-  #mapDiv{
-	margin: 0;
-	padding: 0;
-	height: 300px;
-	border: 1px solid black;
-  }  
+#mapDiv{
+  margin: auto;
+  display: block;
+  padding: 0;
+  height: 500px;
+  width: 80%;
+  border: 1px solid black;
+}  
+
+.photoDiv{
+  width: 400px;
+  height: 300px;
+  margin: 20px;
+  background-color: darkgray;
+  display:inline-block;
+}

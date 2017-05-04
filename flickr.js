@@ -218,7 +218,9 @@ function jsonPhotoInfoLoaded(obj){
 	var latitude = Number(photoInfo.location.latitude);
 	var longitude = Number(photoInfo.location.longitude);
   	
-  	debugger;
+  //
+	console.dir(latitude);
+	console.dir(longitude);
 	if(latitude && longitude){
 		addMarker(latitude, longitude , "" + photoInfo.title._content);
 	}

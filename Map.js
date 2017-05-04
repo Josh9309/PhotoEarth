@@ -12,6 +12,28 @@ var markers = [];
 
 function addMarker(latitude, longitude, title){
 	var position = {lat:latitude, lng:longitude};
+	
+	while(true){
+		debugger;
+		var isDuplicate = false;
+		for(var i = 0; i < markers.length; i++){
+			var lat = markers[i].position.lat()
+			if(position.lat == lat){
+				isDuplicate = true;
+				break;
+			}
+		}
+		
+		if(isDuplicate){
+			
+			position.lat += 0.00001;
+			position.lng += 0.00008;
+		}
+		else{
+			break;
+		}
+	}
+	
 	var marker = new google.maps.Marker({position: position, map:map});
 	if(title == ""){
 	  title = "UntitledImage";
@@ -28,7 +50,7 @@ function addMarker(latitude, longitude, title){
 	markers.push(marker);
 	zoomOnFirstResult();
   
-  	console.dir(marker);
+  	//console.dir(marker);
 }
   
 function clearMarkers(){

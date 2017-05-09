@@ -5,9 +5,12 @@ var FLICKR_URL ="https://api.flickr.com/services/rest/?method=";
 
 var value;
 var bigString = ""; //this is the string of html append to dynamic content div
+var resultsPageNum = 1;
+var currentPlace; //holds the current location we are at
 
 function init(){
 	document.querySelector("#search").onclick = getFlickrPlace;
+	
 	var mapOptions = {
 		center: {lat:39.828127, lng:-98.579404},
 		zoom: 3
@@ -17,6 +20,7 @@ function init(){
 }
 
 function getFlickrPlace(){
+	resultsPageNum = 1;
 	//build url require for getting places
 	var placeUrl = "https://api.flickr.com/services/rest/?method=flickr.places.find&api_key=";
 	
@@ -31,7 +35,7 @@ function getFlickrPlace(){
 	// if there's no band to search then bail out of the function
 	if(query.length < 1) return;
 	
-	document.querySelector("#dynamicContent").innerHTML = "<b>Searching for " + query + "</b>";
+	document.querySelector("#gallery").innerHTML = "<b>Searching for " + query + "</b>";
 	
 	// replace spaces the user typed in the middle of the term with %20
 	// %20 is the hexadecimal value for a space
@@ -63,16 +67,16 @@ function jsonPlaceLoaded(obj){
   if(obj.error){
 	var status = obj.status;
 	var description = obj.description;
-	document.querySelector("#dynamicContent").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
-	$("#dynamicContent").fadeIn(500);
+	document.querySelector("#gallery").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
+	$("#gallery").fadeIn(500);
 	return; // Bail out
   }
   
   // if there are no results, print a message and return
   if(obj.total_items == 0){
 	var status = "No results found";
-	document.querySelector("#dynamicContent").innerHTML = "<p><i>" + status + "</i></p>";
-	$("#dynamicContent").fadeIn(500);
+	document.querySelector("#gallery").innerHTML = "<p><i>" + status + "</i></p>";
+	$("#gallery").fadeIn(500);
 	return; // Bail out
   }
   
@@ -80,15 +84,17 @@ function jsonPlaceLoaded(obj){
   //console.log("places:" + allPlaces.length);
   
   if(allPlaces.length == 0){
-	document.querySelector("#dynamicContent").innerHTML = "<p><i>" + "Sorry Could not find that location. Please Try Again." + "</i></p>";
-	$("#dynamicContent").fadeIn(500);
+	document.querySelector("#gallery").innerHTML = "<p><i>" + "Sorry Could not find that location. Please Try Again." + "</i></p>";
+	$("#gallery").fadeIn(500);
 	return;
   }
   getFlickrLocationPhotos(allPlaces[0]);
-  
+  currentPlace = allPlaces[0];
   bigString = "";
   
-  bigString += "<h3><i>" + "Showing Photo Results for " + allPlaces[0]._content + "</i></h3>"
+  var resultsString = "<i>" + "Results: Showing Photo Results for " + allPlaces[0]._content + "</i>";
+
+	document.querySelector("#Results").innerHTML = resultsString;
 }
 
 function getFlickrLocationPhotos(place){
@@ -110,11 +116,14 @@ function getFlickrLocationPhotos(place){
 	url += ("&lon=" + place.longitude);
 	
 	//limit the request to 10 phots per page
-	url += "&per_page=20";
+	url += "&per_page=12";
+	
+	//get the page of results we want
+	url += "&page=" + resultsPageNum;
 	
 	url += "&format=json&jsoncallback=jsonLocationPhotosLoaded";
 	
-	document.querySelector("#dynamicContent").innerHTML = "<b>Searching for " + place._content + "</b>"; 
+	document.querySelector("#gallery").innerHTML = "<b>Searching for " + place._content + "</b>"; 
 	
 	// call the web service, and download the file
 	console.log("loading " + url);
@@ -126,7 +135,49 @@ function getFlickrLocationPhotos(place){
 	  success: jsonLocationPhotosLoaded
 	});
 }
-  
+
+//Gets the next page results
+function nextFlickrLocPhotos(){
+	bigString = "";
+	resultsPageNum++;
+	// build up our URL string
+	var url = FLICKR_URL +"flickr.photos.search&api_key="; 
+	
+	url += API_KEY;
+	
+	//give request the place id
+	url += ("&place_id" + currentPlace.place_id);
+	
+	//request that photos are geo tagged
+	url += ("&has_geo=true");
+	
+	//give request the latitude
+	url += ("&lat=" + currentPlace.latitude);
+	
+	//give request the longitude
+	url += ("&lon=" + currentPlace.longitude);
+	
+	//limit the request to 10 phots per page
+	url += "&per_page=12";
+	
+	//get the page of results we want
+	url += "&page=" + resultsPageNum;
+	
+	url += "&format=json&jsoncallback=jsonLocationPhotosLoaded";
+	
+	document.querySelector("#gallery").innerHTML = "<b>Searching for " + currentPlace._content + "</b>"; 
+	
+	// call the web service, and download the file
+	console.log("loading " + url);
+	$("#content").fadeOut(1000);
+	$.ajax({
+	  dataType: "jsonp",
+	  url: url,
+	  data: null,
+	  success: jsonLocationPhotosLoaded
+	});
+}
+
 function jsonLocationPhotosLoaded(obj){
 	//console.log("obj = " +obj);
 	//console.log("obj stringified = " + JSON.stringify(obj));
@@ -135,16 +186,16 @@ function jsonLocationPhotosLoaded(obj){
 	if(obj.error){
 		var status = obj.status;
 		var description = obj.description;
-		document.querySelector("#dynamicContent").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
-		$("#dynamicContent").fadeIn(500);
+		document.querySelector("#gallery").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
+		$("#gallery").fadeIn(500);
 		return; // Bail out
 	}
 	
 	// if there are no results, print a message and return
 	if(obj.total_items == 0){
 		var status = "No results found";
-		document.querySelector("#dynamicContent").innerHTML = "<p><i>" + status + "</i><p>" + "<p><i>";
-		$("#dynamicContent").fadeIn(500);
+		document.querySelector("#gallery").innerHTML = "<p><i>" + status + "</i><p>" + "<p><i>";
+		$("#gallery").fadeIn(500);
 		return; // Bail out
 	}
 	
@@ -164,8 +215,11 @@ function jsonLocationPhotosLoaded(obj){
 	  	bigString += "</div>";
 	}
 	
-	document.querySelector("#dynamicContent").innerHTML = bigString;
-	$("#dynamicContent").fadeIn(500);
+	bigString+="<button type ='button' id='NextPage'>Show More Photos</button>"
+	
+	document.querySelector("#gallery").innerHTML = bigString;
+	document.querySelector("#NextPage").onclick = nextFlickrLocPhotos;
+	$("#gallery").fadeIn(500);
 }	
 
 function getFlickrPhotoInfo(photoID){
@@ -199,16 +253,16 @@ function jsonPhotoInfoLoaded(obj){
 	if(obj.error){
 		var status = obj.status;
 		var description = obj.description;
-		document.querySelector("#dynamicContent").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
-		$("#dynamicContent").fadeIn(500);
+		document.querySelector("#gallery").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
+		$("#gallery").fadeIn(500);
 		return; // Bail out
 	}
 	
 	// if there are no results, print a message and return
 	if(obj.total_items == 0){
 		var status = "No results found";
-		document.querySelector("#dynamicContent").innerHTML = "<p><i>" + status + "</i><p>" + "<p><i>";
-		$("#dynamicContent").fadeIn(500);
+		document.querySelector("#gallery").innerHTML = "<p><i>" + status + "</i><p>" + "<p><i>";
+		$("#gallery").fadeIn(500);
 		return; // Bail out
 	}
 	

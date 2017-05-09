@@ -86,6 +86,6 @@ function zoomOnFirstResult(){
 	if(markers[2] == null)return;
 	//set the center of the map to the position of the first marker
 	map.setCenter(markers[2].getPosition());
-	map.setZoom(15);
+	map.setZoom(12);
 }
 

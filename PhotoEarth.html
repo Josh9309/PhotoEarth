@@ -14,16 +14,21 @@
   <link rel = "stylesheet" href="PhotoEarth.css">
 </head>
 <body>
-  <h1>Photo Earth&trade;</h1>
-
-  <button type="button" id="search">Get Photos!<br />:-)</button>
-  What is your location? -&gt; <input id="searchterm" type="text" size="20" maxlength="20" autofocus value="Boston" /> 
-
-  <h2>Results</h2>
-  <div id="dynamicContent">
-	<p>No Photos yet!</p>
-  </div>
-  <div id= "mapDiv"></div>
-
+	<h1>Photo Earth&trade;</h1>
+	
+	<div id= "searchBar">
+	<p style="display:inline-block;">
+		What is your location?
+			<input id="searchterm" type="text" size="20" maxlength="20" autofocus value="Boston" />
+			<button type="button" id="search">Get Photos!</button>
+		</p>
+	</div>
+	
+	<h2 id="Results">Results: None</h2>
+	<div id="gallery">
+	</div>
+	
+	<div id= "mapDiv"></div>
+	
 </body>
 </html>

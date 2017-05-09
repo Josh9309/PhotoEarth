@@ -100,7 +100,7 @@
 		// if there's no band to search then bail out of the function
 		if(value.length < 1) return;
 		
-		document.querySelector("#dynamicContent").innerHTML = "<b>Searching for " + value + "</b>";
+		document.querySelector("#gallery").innerHTML = "<b>Searching for " + value + "</b>";
 		
 		// replace spaces the user typed in the middle of the term with %20
 		// %20 is the hexadecimal value for a space
@@ -128,16 +128,16 @@
 		if(obj.error){
 			var status = obj.status;
 			var description = obj.description;
-			document.querySelector("#dynamicContent").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
-			$("#dynamicContent").fadeIn(500);
+			document.querySelector("#gallery").innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + description + "</i><p>";
+			$("#gallery").fadeIn(500);
 			return; // Bail out
 		}
 		
 		// if there are no results, print a message and return
 		if(obj.total_items == 0){
 			var status = "No results found";
-			document.querySelector("#dynamicContent").innerHTML = "<p><i>" + status + "</i><p>" + "<p><i>";
-			$("#dynamicContent").fadeIn(500);
+			document.querySelector("#gallery").innerHTML = "<p><i>" + status + "</i><p>" + "<p><i>";
+			$("#gallery").fadeIn(500);
 			return; // Bail out
 		}
 		
@@ -191,8 +191,8 @@
 			}
 		}
 		zoomOnFirstResult();
-		document.querySelector("#dynamicContent").innerHTML = bigString;
-		$("#dynamicContent").fadeIn(500);
+		document.querySelector("#gallery").innerHTML = bigString;
+		$("#gallery").fadeIn(500);
 	}	
   
   
@@ -291,7 +291,7 @@ What is your location? -&gt; <input id="searchterm" type="text" size="20" maxlen
 
 <h2>Results</h2>
 <div id= "mapDiv"></div>
- <div id="dynamicContent">
+ <div id="gallery">
  <p>No data yet!</p>
  </div>
  

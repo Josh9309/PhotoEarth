@@ -17,6 +17,8 @@ body{
 	background-position: 0 -100px;
    	width: 85%;
    	border-radius: 20px;
+	display: block;
+	margin: auto;
  }
  
  .eventDiv{
@@ -47,7 +49,6 @@ body{
  	padding:6px 24px;
  	text-decoration:none;
  	text-shadow:0px 1px 0px #b23e35;
- 	margin-right:2em;
  }
 
  	
@@ -89,4 +90,47 @@ img{
   margin: 20px;
   background-color: darkgray;
   display:inline-block;
+}
+
+#searchBar{
+	display: block;
+	margin: auto;
+	width: 530px;
+	padding-left: 2em;
+	padding-right: 2em;
+	background-color:silver;
+	border-radius: 10px;
+	margin-top: 2em;
+	font-size: 14pt;
+}
+
+#Results{
+	display: block;
+	margin: auto;
+	margin-top: 1em;
+	width: 90%;
+	text-align: center;
+	border-radius: 20px;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	background-color: #344A91;
+}
+
+#gallery{
+	display: block;
+	background-color: #68749D;
+	border-radius: 30px;
+	margin: auto;
+	margin-top: .5em;
+	margin-bottom: 1em;
+	padding-bottom: .5em;
+	width: 96%;
+	text-align: center;
+}
+
+#NextPage{
+	display: block;
+	margin: auto;
+	border-radius: 10px;
+	font-size: 20pt;
 }

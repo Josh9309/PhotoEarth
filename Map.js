@@ -10,7 +10,7 @@ var markers = [];
 //	return map;
 //}
 
-function addMarker(latitude, longitude, title){
+function addMarker(latitude, longitude, title, image){
 	var position = {lat:latitude, lng:longitude};
 	
 	while(true){
@@ -34,7 +34,7 @@ function addMarker(latitude, longitude, title){
 		}
 	}
 	
-	var marker = new google.maps.Marker({position: position, map:map});
+	var marker = new google.maps.Marker({position: position, map:map,icon:image,});
 	if(title == ""){
 	  title = "UntitledImage";
 	  marker.setTitle(title);
@@ -44,7 +44,7 @@ function addMarker(latitude, longitude, title){
 	}
 	//Add a listener for the click event
 	google.maps.event.addListener(marker, 'click', function(e){
-		makeInfoWindow(position, title);
+		makeInfoWindow(position, title, image);
 	});
 	
 	markers.push(marker);
@@ -68,7 +68,7 @@ function clearMarkers(){
 	markers = [];
 }
 
-function makeInfoWindow(position, msg){
+function makeInfoWindow(position, msg, imageUrl){
 	//Close old Info Window if it exists
 	if(infowindow){
 		infowindow.close();
@@ -78,7 +78,7 @@ function makeInfoWindow(position, msg){
 	infowindow = new google.maps.InfoWindow({
 		map: map,
 		position: position,
-		content: "<b>" + msg + "</b>"
+		content: "<img src='"+ imageUrl +"'/>",
 	});
 }
 

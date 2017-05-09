@@ -207,10 +207,12 @@ function jsonLocationPhotosLoaded(obj){
 		var photo = allPhotos[i];
 		console.log(allPhotos[i]);
 		
+		var flickr_Photo_url = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_m.jpg"; 
+		
 		getFlickrPhotoInfo(photo.id);
 		
 	  	bigString += "<div class='photoDiv'>";
-		var flickr_Photo_url = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_m.jpg"  
+		 
 		bigString += "<img src='"+ flickr_Photo_url +"'/>";
 	  	bigString += "</div>";
 	}
@@ -272,11 +274,12 @@ function jsonPhotoInfoLoaded(obj){
 	var latitude = Number(photoInfo.location.latitude);
 	var longitude = Number(photoInfo.location.longitude);
   	
-  //
+    var flickr_Photo_url = "https://farm" +photoInfo.farm +".staticflickr.com/"+photoInfo.server +"/"+photoInfo.id+"_"+photoInfo.secret +"_s.jpg";
+	
 	console.dir(latitude);
 	console.dir(longitude);
 	if(latitude && longitude){
-		addMarker(latitude, longitude , "" + photoInfo.title._content);
+		addMarker(latitude, longitude , "" + photoInfo.title._content, flickr_Photo_url);
 	}
 	
 }

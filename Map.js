@@ -14,7 +14,6 @@ function addMarker(latitude, longitude, title, image){
 	var position = {lat:latitude, lng:longitude};
 	
 	while(true){
-		debugger;
 		var isDuplicate = false;
 		for(var i = 0; i < markers.length; i++){
 			var lat = markers[i].position.lat()
@@ -89,3 +88,6 @@ function zoomOnFirstResult(){
 	map.setZoom(12);
 }
 
+function fullScreenMap(){
+	document.getElementById("mapDiv").webkitRequestFullscreen();
+}

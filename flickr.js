@@ -6,10 +6,13 @@ var FLICKR_URL ="https://api.flickr.com/services/rest/?method=";
 var value;
 var bigString = ""; //this is the string of html append to dynamic content div
 var resultsPageNum = 1;
+var maxPages = 10;
 var currentPlace; //holds the current location we are at
+var currentPhotos = []; //holds the info of the current photos in the gallery 
 
 function init(){
 	document.querySelector("#search").onclick = getFlickrPlace;
+	document.querySelector("#mapFull").onclick = fullScreenMap;
 	
 	var mapOptions = {
 		center: {lat:39.828127, lng:-98.579404},
@@ -140,6 +143,9 @@ function getFlickrLocationPhotos(place){
 function nextFlickrLocPhotos(){
 	bigString = "";
 	resultsPageNum++;
+	if(resultsPageNum +1 > maxPages){
+		resultsPageNum = 1;	
+	}
 	// build up our URL string
 	var url = FLICKR_URL +"flickr.photos.search&api_key="; 
 	
@@ -199,8 +205,11 @@ function jsonLocationPhotosLoaded(obj){
 		return; // Bail out
 	}
 	
+	maxPages = obj.photos.pages;
+	
 	var allPhotos = obj.photos.photo;
-	//console.log("All photos.length = " + allPhotos.length);
+	currentPhotos = [];
+	
   	clearMarkers();
 	markers = []; //clear old markers
 	for(var i =0; i < allPhotos.length; i++){
@@ -213,13 +222,21 @@ function jsonLocationPhotosLoaded(obj){
 		
 	  	bigString += "<div class='photoDiv'>";
 		 
-		bigString += "<img src='"+ flickr_Photo_url +"'/>";
+		bigString += "<img id='"+ i+"' src='"+ flickr_Photo_url +"'/>"
 	  	bigString += "</div>";
 	}
 	
 	bigString+="<button type ='button' id='NextPage'>Show More Photos</button>"
 	
 	document.querySelector("#gallery").innerHTML = bigString;
+	/*for(var i = 0; i < allPhotos.length; i++){
+		var imgEle = document.getElementById(""+i);
+		
+		imgEle.addEventListener('click', function(){
+			debugger;
+			fullscreenImg(imgEle)
+		});
+	}*/
 	document.querySelector("#NextPage").onclick = nextFlickrLocPhotos;
 	$("#gallery").fadeIn(500);
 }	
@@ -270,6 +287,7 @@ function jsonPhotoInfoLoaded(obj){
 	
 	//store photo info
 	var photoInfo = obj.photo;
+	currentPhotos.push(photoInfo);
 	
 	var latitude = Number(photoInfo.location.latitude);
 	var longitude = Number(photoInfo.location.longitude);
@@ -282,4 +300,8 @@ function jsonPhotoInfoLoaded(obj){
 		addMarker(latitude, longitude , "" + photoInfo.title._content, flickr_Photo_url);
 	}
 	
+}
+
+function fullscreenImg(img){
+	img.webkitRequestFullscreen();
 }

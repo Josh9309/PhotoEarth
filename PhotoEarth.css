@@ -134,3 +134,11 @@ img{
 	border-radius: 10px;
 	font-size: 20pt;
 }
+
+#mapFull{
+	display: block;
+	margin: auto;
+	margin-top: .3em;
+	border-radius: 10px;
+	font-size: 20pt;
+}

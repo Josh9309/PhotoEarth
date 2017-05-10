@@ -9,6 +9,7 @@ var resultsPageNum = 1;
 var maxPages = 10;
 var currentPlace; //holds the current location we are at
 var currentPhotos = []; //holds the info of the current photos in the gallery 
+var photosLength;
 
 function init(){
 	document.querySelector("#search").onclick = getFlickrPlace;
@@ -209,6 +210,7 @@ function jsonLocationPhotosLoaded(obj){
 	
 	var allPhotos = obj.photos.photo;
 	currentPhotos = [];
+	photosLength = allPhotos.length;
 	
   	clearMarkers();
 	markers = []; //clear old markers
@@ -216,29 +218,8 @@ function jsonLocationPhotosLoaded(obj){
 		var photo = allPhotos[i];
 		console.log(allPhotos[i]);
 		
-		var flickr_Photo_url = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_m.jpg"; 
-		
 		getFlickrPhotoInfo(photo.id);
-		
-	  	bigString += "<div class='photoDiv'>";
-		 
-		bigString += "<img id='"+ i+"' src='"+ flickr_Photo_url +"'/>"
-	  	bigString += "</div>";
 	}
-	
-	bigString+="<button type ='button' id='NextPage'>Show More Photos</button>"
-	
-	document.querySelector("#gallery").innerHTML = bigString;
-	/*for(var i = 0; i < allPhotos.length; i++){
-		var imgEle = document.getElementById(""+i);
-		
-		imgEle.addEventListener('click', function(){
-			debugger;
-			fullscreenImg(imgEle)
-		});
-	}*/
-	document.querySelector("#NextPage").onclick = nextFlickrLocPhotos;
-	$("#gallery").fadeIn(500);
 }	
 
 function getFlickrPhotoInfo(photoID){
@@ -289,6 +270,7 @@ function jsonPhotoInfoLoaded(obj){
 	var photoInfo = obj.photo;
 	currentPhotos.push(photoInfo);
 	
+	console.dir(currentPhotos);
 	var latitude = Number(photoInfo.location.latitude);
 	var longitude = Number(photoInfo.location.longitude);
   	
@@ -300,8 +282,24 @@ function jsonPhotoInfoLoaded(obj){
 		addMarker(latitude, longitude , "" + photoInfo.title._content, flickr_Photo_url);
 	}
 	
+	var flickr_Photo_urlPage = "https://farm" +photoInfo.farm +".staticflickr.com/"+photoInfo.server +"/"+photoInfo.id+"_"+photoInfo.secret +"_m.jpg"; 
+		
+	bigString += "<div class='photoDiv'>";
+	 
+	bigString += "<img id='"+ (currentPhotos.length-1) +"' src='"+ flickr_Photo_urlPage +"'"+'onClick="imageClicked(\'' + (currentPhotos.length-1) + '\')" />';
+	  bigString += "</div>";
+	
+	
+	if(currentPhotos.length+1 > photosLength){
+		bigString+="<button type ='button' id='NextPage'>Show More Photos</button>"
+	
+		document.querySelector("#gallery").innerHTML = bigString;
+	
+		document.querySelector("#NextPage").onclick = nextFlickrLocPhotos;
+		$("#gallery").fadeIn(500);
+	}
 }
 
-function fullscreenImg(img){
-	img.webkitRequestFullscreen();
+function imageClicked(i){
+	zoomOnPhoto(currentPhotos[i]);
 }

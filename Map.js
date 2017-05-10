@@ -82,10 +82,20 @@ function makeInfoWindow(position, msg, imageUrl){
 }
 
 function zoomOnFirstResult(){
-	if(markers[2] == null)return;
+	if(markers[0] == null)return;
 	//set the center of the map to the position of the first marker
-	map.setCenter(markers[2].getPosition());
+	map.setCenter(markers[0].getPosition());
 	map.setZoom(12);
+}
+
+function zoomOnPhoto(photo){
+	var latitude = Number(photo.location.latitude);
+	var longitude = Number(photo.location.longitude);
+	var position = {lat:latitude, lng:longitude};
+	
+	//set the center of the map to the position of the photo
+	map.setCenter(position);
+	map.setZoom(20);
 }
 
 function fullScreenMap(){

@@ -15,6 +15,8 @@ function init(){
 	document.querySelector("#search").onclick = getFlickrPlace;
 	document.querySelector("#mapFull").onclick = fullScreenMap;
 	
+	$("#photoView").fadeOut(500);
+	$("#gallery").fadeOut(500);
 	var mapOptions = {
 		center: {lat:39.828127, lng:-98.579404},
 		zoom: 3
@@ -270,7 +272,6 @@ function jsonPhotoInfoLoaded(obj){
 	var photoInfo = obj.photo;
 	currentPhotos.push(photoInfo);
 	
-	console.dir(currentPhotos);
 	var latitude = Number(photoInfo.location.latitude);
 	var longitude = Number(photoInfo.location.longitude);
   	
@@ -297,9 +298,120 @@ function jsonPhotoInfoLoaded(obj){
 	
 		document.querySelector("#NextPage").onclick = nextFlickrLocPhotos;
 		$("#gallery").fadeIn(500);
+		console.dir(currentPhotos);
 	}
 }
 
 function imageClicked(i){
-	zoomOnPhoto(currentPhotos[i]);
+	//Fade out the gallery and fade in the indepedent photo view
+	$("#gallery").fadeOut(500);
+	$("#photoView").fadeIn(500);
+	debugger;
+	var index = Number(i);
+	var photo = currentPhotos[index]; //holds json object of photo with the photo info
+	console.dir(photo);
+	
+	var photoViewString = ""; //holds the html to be inserted into the div
+	
+	var title = photo.title._content;
+	if(title == null || title == ""){
+		title = "Untitled";
+	}
+	
+	var description = photo.description._content;
+	if(description == null || description == ""){
+		description = "No Description!";
+	}
+	
+	var location = "";
+	if(photo.location.neighbourhood != undefined){
+		location += photo.location.neighbourhood._content + ", ";
+	}
+	if(photo.location.locality != undefined){
+		location += photo.location.locality._content + ", ";
+	} 
+	if(photo.location.region != undefined){
+		location += photo.location.region._content + ", ";
+	}
+	
+	if(photo.location.country != undefined){
+		location+= photo.location.country._content;
+	}
+	
+	var photoUrl = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_n.jpg"; 
+	
+	
+	//Add Image Title
+	photoViewString += "<h2 id = 'photoTitle'> " + title + "</h2>";
+	
+	//add photo to the html
+	photoViewString += "<div class='photoViewer'>";
+	 
+	photoViewString += "<img src='"+ photoUrl +"' />";
+	photoViewString += "</div>";
+	
+	//Add Right Column Div
+	photoViewString += "<div class ='leftCol'>"
+	//Add the user
+	photoViewString += "<h3 id='imageUser'>USER: " + photo.owner.username +"</h3>";
+	
+	//Add the Image description
+	photoViewString += "<p id='imgDescript'> " + description + "</p>";
+	
+	//Close Right Col
+	photoViewString+= "</div>";
+	
+	//Add Left Column Div
+	photoViewString += "<div class='leftCol'>";
+	
+	//Add the location
+	photoViewString += "<h3 id='imageLoc'>" + location +"</h3>";
+	
+	//Tags List
+	photoViewString += "<ul id='imageTags'>";
+	
+	//add tags to list
+	if(photo.tags.tag.length == 0){
+		photoViewString += "<li> NO TAGS! </li>";
+	}
+	else{
+		for(var j =0; j < photo.tags.tag.length; j++){
+			photoViewString += "<li> " + photo.tags.tag[j]._content + "</li>";
+		}
+	}
+	photoViewString += "</ul>";
+	
+	//Close Left Col Div
+	photoViewString += "</div>";
+	
+	photoViewString += "<div id='viewBtnDiv'>";
+	//ADD Prev button
+	var prevCreate = false;
+	if(index != 0){
+		photoViewString += "<button type='button' class='viewBtn' id='prev' onclick='imageClicked(" + (index-1) + ")'> Prev </button>"; 
+		prevCreate = true;
+	}
+	
+	//add Gallery button
+	photoViewString += "<button type='button'class='viewBtn' id='galBtn' onclick='showGallery()'> Gallery </button>";
+	
+	//Add Next Button
+	var nextCreate = false;
+	if(index != currentPhotos.length-1){
+		photoViewString += "<button type='button'class='viewBtn' id='next' onclick='imageClicked(" + (index+1) + ")'> Next </button>";
+		nextCreate = true;
+	}
+	
+	photoViewString += "</div>";
+	document.getElementById("photoView").innerHTML = photoViewString;
+	
+	zoomOnPhoto(currentPhotos[index]);
+}
+
+function showGallery(){
+	$("#photoView").fadeOut(500);
+	$("#gallery").fadeIn(500);
+	
+	document.getElementById("photoView").innerHTML = "";
+	zoomOnFirstResult();
 }

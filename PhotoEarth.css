@@ -197,6 +197,7 @@ img{
 	border-radius: 5px;
 	width: 80%;
 	padding: .5em;
+	min-height: 2em;
 }
 
 #imageLoc{
@@ -208,6 +209,7 @@ img{
 	padding: .5em;
 	word-wrap: break-word;
 	font-size: 11pt;
+	min-height: 3em;
 }
 
 #imgDescript{

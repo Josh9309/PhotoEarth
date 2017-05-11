@@ -98,7 +98,7 @@ img{
 	width: 530px;
 	padding-left: 2em;
 	padding-right: 2em;
-	background-color:#464E6A;
+	background-color:#38509D;
 	border-radius: 10px;
 	margin-top: 2em;
 	font-size: 14pt;
@@ -114,12 +114,12 @@ img{
 	border-radius: 20px;
 	padding-top: .5em;
 	padding-bottom: .5em;
-	background-color: #4562C2;
+	background-color: #68749D;
 }
 
 #gallery{
 	display: block;
-	background-color: #68749D;
+	background-color: #38509D;
 	border-radius: 30px;
 	margin: auto;
 	margin-top: .5em;
@@ -131,7 +131,7 @@ img{
 
 #photoView{
 	display: block;
-	background-color: #464E6A;
+	background-color: #38509D;
 	border-radius: 30px;
 	margin: auto;
 	margin-top: .5em;
@@ -164,7 +164,7 @@ img{
 	margin-bottom: 1em;
 	border-radius: 10px;
 	padding: .2em;
-	background-color: #4562C2;
+	background-color: #68749D;
 	width: 90%;
 }
 
@@ -172,11 +172,18 @@ img{
 	display: block;
 	margin: auto;
 	padding: 1em;
-	background-color: #68749D;
+	background-color: #464E6A;
 	max-width: 360px;
 	margin-top: 0px;
 }
 
+#flickPhoto{
+	max-width: 340px;
+}
+
+#flickPhoto:-webkit-full-screen{
+	max-width: 100%;
+}
 #mapDiv:-webkit-full-screen {
 	width: 100%;
 	height: 100%;
@@ -251,4 +258,5 @@ img{
 	font-size: 15pt;
 	border-radius: 10px;
 	width: 10em;
+	background-color: 68749D;
 }

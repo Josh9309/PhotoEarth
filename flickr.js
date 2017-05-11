@@ -303,6 +303,7 @@ function jsonPhotoInfoLoaded(obj){
 }
 
 function imageClicked(i){
+	window.scrollTo(0,0);
 	//Fade out the gallery and fade in the indepedent photo view
 	$("#gallery").fadeOut(500);
 	$("#photoView").fadeIn(500);
@@ -338,7 +339,7 @@ function imageClicked(i){
 		location+= photo.location.country._content;
 	}
 	
-	var photoUrl = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_n.jpg"; 
+	var photoUrl = "https://farm" +photo.farm +".staticflickr.com/"+photo.server +"/"+photo.id+"_"+photo.secret +"_b.jpg"; 
 	
 	
 	//Add Image Title
@@ -347,7 +348,10 @@ function imageClicked(i){
 	//add photo to the html
 	photoViewString += "<div class='photoViewer'>";
 	 
-	photoViewString += "<img src='"+ photoUrl +"' />";
+	photoViewString += "<img id ='flickPhoto' src='"+ photoUrl +"' />";
+	
+	photoViewString += "<button type='button'class='viewBtn' id='galBtn' onclick='fullScreenImg()'> FullScreen </button>";
+	
 	photoViewString += "</div>";
 	
 	//Add Right Column Div
@@ -414,4 +418,9 @@ function showGallery(){
 	
 	document.getElementById("photoView").innerHTML = "";
 	zoomOnFirstResult();
+	window.scrollTo(0,0);
+}
+
+function fullScreenImg(){
+	document.getElementById("flickPhoto").webkitRequestFullscreen();
 }

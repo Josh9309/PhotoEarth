@@ -26,6 +26,10 @@ function init(){
 }
 
 function getFlickrPlace(){
+	$("#photoView").fadeOut(500);
+	clearMarkers();
+	map.setZoom(5);
+	
 	resultsPageNum = 1;
 	//build url require for getting places
 	var placeUrl = "https://api.flickr.com/services/rest/?method=flickr.places.find&api_key=";
@@ -90,8 +94,8 @@ function jsonPlaceLoaded(obj){
   //console.log("places:" + allPlaces.length);
   
   if(allPlaces.length == 0){
-	document.querySelector("#gallery").innerHTML = "<p><i>" + "Sorry Could not find that location. Please Try Again." + "</i></p>";
-	$("#gallery").fadeIn(500);
+	document.querySelector("#Results").innerHTML = "<p><i>" + "Sorry Could not find that location. Please Try Again." + "</i></p>";
+	$("#gallery").fadeOut(500);
 	return;
   }
   getFlickrLocationPhotos(allPlaces[0]);
@@ -145,6 +149,7 @@ function getFlickrLocationPhotos(place){
 //Gets the next page results
 function nextFlickrLocPhotos(){
 	bigString = "";
+	window.scrollTo(0,0);
 	resultsPageNum++;
 	if(resultsPageNum +1 > maxPages){
 		resultsPageNum = 1;	
